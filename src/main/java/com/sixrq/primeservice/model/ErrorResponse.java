@@ -11,8 +11,8 @@ public class ErrorResponse {
     private final String message;
     private final String stackTrace;
 
-    public ErrorResponse(Integer status, RequestAttributes attributes) {
-        this.status = status;
+    public ErrorResponse(RequestAttributes attributes) {
+        this.status = (Integer) attributes.getAttribute("javax.servlet.error.status_code", 0);
 
         Exception exception = (Exception) attributes.getAttribute("org.springframework.web.servlet.DispatcherServlet.EXCEPTION", 0);
         this.message = exception != null ? ExceptionUtils.getRootCauseMessage(exception) : "";

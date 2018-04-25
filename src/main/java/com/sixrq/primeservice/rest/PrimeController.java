@@ -4,7 +4,6 @@ import com.sixrq.primeservice.model.ErrorResponse;
 import com.sixrq.primeservice.model.PrimesResult;
 import com.sixrq.primeservice.service.PrimeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +36,7 @@ public class PrimeController implements ErrorController {
     @ResponseBody
     public ErrorResponse error(HttpServletRequest request, HttpServletResponse response) {
         RequestAttributes attributes = new ServletRequestAttributes(request);
-        return new ErrorResponse(response.getStatus(), attributes);
+        return new ErrorResponse(attributes);
     }
 
     @Override

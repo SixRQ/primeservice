@@ -11,6 +11,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import javax.servlet.RequestDispatcher;
+
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -22,7 +29,7 @@ public class PrimeControllerTest {
     @Test
     public void index() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/"))
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -30,8 +37,24 @@ public class PrimeControllerTest {
         String expectedResult = "{\"initial\":10,\"primes\":[2,3,5,7]}";
 
         mvc.perform(MockMvcRequestBuilders.get("/primes/10").accept(MediaType.APPLICATION_JSON))
-                .andExpect((MockMvcResultMatchers.status().isOk()))
-                .andExpect(MockMvcResultMatchers.content().json(expectedResult));
+                .andExpect((status().isOk()))
+                .andExpect(content().json(expectedResult));
+    }
+
+    @Test
+    public void testInvalidInputAsJson() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/primes/10.5").accept(MediaType.APPLICATION_JSON))
+                .andExpect((status().isBadRequest()));
+    }
+
+    @Test
+    public void testErrorReturnsMeaningfulJson() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/error")
+                .requestAttr(RequestDispatcher.ERROR_STATUS_CODE, 400)
+                .requestAttr("org.springframework.web.servlet.DispatcherServlet.EXCEPTION", new Exception("Some error text"))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("status", is(400)))
+                .andExpect(jsonPath("message", is("Exception: Some error text")));
     }
 
     @Test
@@ -48,7 +71,7 @@ public class PrimeControllerTest {
                 "</PrimesResult>";
 
         mvc.perform(MockMvcRequestBuilders.get("/primes/10").accept(MediaType.APPLICATION_XML))
-                .andExpect((MockMvcResultMatchers.status().isOk()))
-                .andExpect(MockMvcResultMatchers.content().xml(expectedResult));
+                .andExpect((status().isOk()))
+                .andExpect(content().xml(expectedResult));
     }
 }
