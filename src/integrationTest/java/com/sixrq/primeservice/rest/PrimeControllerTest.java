@@ -22,7 +22,7 @@ public class PrimeControllerTest {
     @Test
     public void index() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/"))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test
