@@ -32,7 +32,7 @@ public class PrimeControllerTest {
     public void testPrimeAsJson() throws Exception {
         String expectedResult = "{\"initial\":10,\"primes\":[2,3,5,7]}";
 
-        mvc.perform(MockMvcRequestBuilders.get("/testPrime").accept(MediaType.APPLICATION_JSON))
+        mvc.perform(MockMvcRequestBuilders.get("/primes/10").accept(MediaType.APPLICATION_JSON))
                 .andExpect((status().isOk()))
                 .andExpect(content().json(expectedResult));
     }
@@ -50,7 +50,7 @@ public class PrimeControllerTest {
                 "    </primes>" +
                 "</PrimesResult>";
 
-        mvc.perform(MockMvcRequestBuilders.get("/testPrime").accept(MediaType.APPLICATION_XML))
+        mvc.perform(MockMvcRequestBuilders.get("/primes/10").accept(MediaType.APPLICATION_XML))
                 .andExpect((status().isOk()))
                 .andExpect(content().xml(expectedResult));
     }
