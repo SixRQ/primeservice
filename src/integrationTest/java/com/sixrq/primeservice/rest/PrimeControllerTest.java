@@ -9,10 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import static org.hamcrest.EasyMock2Matchers.equalTo;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -25,7 +22,7 @@ public class PrimeControllerTest {
     @Test
     public void index() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/"))
-                .andExpect(status().isOk());
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
@@ -33,8 +30,8 @@ public class PrimeControllerTest {
         String expectedResult = "{\"initial\":10,\"primes\":[2,3,5,7]}";
 
         mvc.perform(MockMvcRequestBuilders.get("/primes/10").accept(MediaType.APPLICATION_JSON))
-                .andExpect((status().isOk()))
-                .andExpect(content().json(expectedResult));
+                .andExpect((MockMvcResultMatchers.status().isOk()))
+                .andExpect(MockMvcResultMatchers.content().json(expectedResult));
     }
 
     @Test
@@ -51,7 +48,7 @@ public class PrimeControllerTest {
                 "</PrimesResult>";
 
         mvc.perform(MockMvcRequestBuilders.get("/primes/10").accept(MediaType.APPLICATION_XML))
-                .andExpect((status().isOk()))
-                .andExpect(content().xml(expectedResult));
+                .andExpect((MockMvcResultMatchers.status().isOk()))
+                .andExpect(MockMvcResultMatchers.content().xml(expectedResult));
     }
 }
