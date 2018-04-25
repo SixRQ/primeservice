@@ -30,6 +30,60 @@ public class PrimeServiceTest {
     }
 
     @Test
+    public void testPrimeNumbersToTenTwice() {
+        PrimesResult expectedResult = new PrimesResult(10);
+        expectedResult.addPrime(2);
+        expectedResult.addPrime(3);
+        expectedResult.addPrime(5);
+        expectedResult.addPrime(7);
+
+        assertThat(service.calculatePrimes(10), is(equalTo(expectedResult)));
+        assertThat(service.calculatePrimes(10), is(equalTo(expectedResult)));
+    }
+
+    @Test
+    public void testPrimeNumbersToTenAndTwenty() {
+        PrimesResult expectedResultToTen = new PrimesResult(10);
+        expectedResultToTen.addPrime(2);
+        expectedResultToTen.addPrime(3);
+        expectedResultToTen.addPrime(5);
+        expectedResultToTen.addPrime(7);
+        PrimesResult expectedResultToTwenty = new PrimesResult(20);
+        expectedResultToTwenty.addPrime(2);
+        expectedResultToTwenty.addPrime(3);
+        expectedResultToTwenty.addPrime(5);
+        expectedResultToTwenty.addPrime(7);
+        expectedResultToTwenty.addPrime(11);
+        expectedResultToTwenty.addPrime(13);
+        expectedResultToTwenty.addPrime(17);
+        expectedResultToTwenty.addPrime(19);
+
+        assertThat(service.calculatePrimes(10), is(equalTo(expectedResultToTen)));
+        assertThat(service.calculatePrimes(20), is(equalTo(expectedResultToTwenty)));
+    }
+
+    @Test
+    public void testPrimeNumbersToTwentyAndTen() {
+        PrimesResult expectedResultToTen = new PrimesResult(10);
+        expectedResultToTen.addPrime(2);
+        expectedResultToTen.addPrime(3);
+        expectedResultToTen.addPrime(5);
+        expectedResultToTen.addPrime(7);
+        PrimesResult expectedResultToTwenty = new PrimesResult(20);
+        expectedResultToTwenty.addPrime(2);
+        expectedResultToTwenty.addPrime(3);
+        expectedResultToTwenty.addPrime(5);
+        expectedResultToTwenty.addPrime(7);
+        expectedResultToTwenty.addPrime(11);
+        expectedResultToTwenty.addPrime(13);
+        expectedResultToTwenty.addPrime(17);
+        expectedResultToTwenty.addPrime(19);
+
+        assertThat(service.calculatePrimes(20), is(equalTo(expectedResultToTwenty)));
+        assertThat(service.calculatePrimes(10), is(equalTo(expectedResultToTen)));
+    }
+
+    @Test
     public void testPrimeNumbersCorrectWhenInitialIsPrime() {
         PrimesResult expectedResult = new PrimesResult(7);
         expectedResult.addPrime(2);
