@@ -1,6 +1,7 @@
 package com.sixrq.primeservice.rest;
 
 import org.apache.commons.lang3.time.StopWatch;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -13,6 +14,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import static org.junit.Assert.fail;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -37,26 +43,27 @@ public class PerformanceTest {
     }
 
     @Test
-    public void profileSimpleLargeRequest() throws Exception {
+    public void profileLargeRequest() throws Exception {
         StopWatch stopWatch = StopWatch.createStarted();
 
         try {
             performRestServiceCall(100000);
         } finally {
             stopWatch.stop();
-            LOGGER.info("Finished simple test in " + stopWatch.getTime() + "ms");
+            LOGGER.info("Finished large test in " + stopWatch.getTime() + "ms");
         }
     }
 
     @Test
-    public void profileSimpleExtremeRequest() throws Exception {
+    @Ignore
+    public void profileExtremeRequest() throws Exception {
         StopWatch stopWatch = StopWatch.createStarted();
 
         try {
             performRestServiceCall(1000000);
         } finally {
             stopWatch.stop();
-            LOGGER.info("Finished simple test in " + stopWatch.getTime() + "ms");
+            LOGGER.info("Finished extreme test in " + stopWatch.getTime() + "ms");
         }
     }
 
@@ -69,8 +76,57 @@ public class PerformanceTest {
             performRestServiceCall(100000);
         } finally {
             stopWatch.stop();
-            LOGGER.info("Finished simple test in " + stopWatch.getTime() + "ms");
+            LOGGER.info("Finished two large requests in " + stopWatch.getTime() + "ms");
         }
+    }
+
+    @Test
+    public void profileMultipleThreads() throws InterruptedException {
+        ExecutorService executors = Executors.newFixedThreadPool(30);
+        CountDownLatch latch = new CountDownLatch(30);
+        StopWatch stopWatch = StopWatch.createStarted();
+
+        try {
+            for(int threadCount = 0; threadCount < 30; threadCount++) {
+                executeThreadedCall(executors, latch);
+            }
+            latch.await();
+        } finally {
+            stopWatch.stop();
+            executors.shutdown();
+            LOGGER.info("Finished multiple threads test in " + stopWatch.getTime() + "ms");
+        }
+    }
+
+    @Test
+    public void profileMultipleRequestSmallThreadPool() throws InterruptedException {
+        ExecutorService executors = Executors.newFixedThreadPool(5);
+        CountDownLatch latch = new CountDownLatch(30);
+        StopWatch stopWatch = StopWatch.createStarted();
+
+        try {
+            for(int threadCount = 0; threadCount < 30; threadCount++) {
+                executeThreadedCall(executors, latch);
+            }
+            latch.await();
+        } finally {
+            stopWatch.stop();
+            executors.shutdown();
+            LOGGER.info("Finished multiple threads with smaller thread pool in " + stopWatch.getTime() + "ms");
+        }
+    }
+
+    private void executeThreadedCall(ExecutorService executors, CountDownLatch latch) {
+        executors.submit(() -> {
+            try {
+                performRestServiceCall(100000);
+                LOGGER.info("Completed threaded call");
+                latch.countDown();
+            } catch (Exception e) {
+                LOGGER.error("Unexpected exception received", e);
+                fail("Unexpected exceptions running multi-threaded test");
+            }
+        });
     }
 
     @Test
@@ -90,7 +146,7 @@ public class PerformanceTest {
             performRestServiceCall(1000);
         } finally {
             stopWatch.stop();
-            LOGGER.info("Finished simple test in " + stopWatch.getTime() + "ms");
+            LOGGER.info("Finished multiple simple requests in " + stopWatch.getTime() + "ms");
         }
     }
 
