@@ -1,6 +1,7 @@
 package com.sixrq.primeservice.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -24,5 +25,28 @@ public class PrimesResult {
 
     public void addPrime(int prime) {
         primes.add(prime);
+    }
+
+    @Override
+    public String toString() {
+        return "PrimesResult{" +
+                "initial=" + initial +
+                ", primes=" + primes +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PrimesResult result = (PrimesResult) o;
+        return initial == result.initial &&
+                Objects.equals(primes, result.primes);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(initial, primes);
     }
 }
