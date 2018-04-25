@@ -10,6 +10,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static org.hamcrest.EasyMock2Matchers.equalTo;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -22,7 +24,34 @@ public class PrimeControllerTest {
 
     @Test
     public void index() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.APPLICATION_JSON))
+        mvc.perform(MockMvcRequestBuilders.get("/"))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testPrimeAsJson() throws Exception {
+        String expectedResult = "{\"initial\":10,\"primes\":[2,3,5,7]}";
+
+        mvc.perform(MockMvcRequestBuilders.get("/testPrime").accept(MediaType.APPLICATION_JSON))
+                .andExpect((status().isOk()))
+                .andExpect(content().json(expectedResult));
+    }
+
+    @Test
+    public void testPrimeAsXML() throws Exception {
+        String expectedResult = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
+                "<PrimesResult xmlns=\"\">" +
+                "    <initial>10</initial>" +
+                "    <primes>" +
+                "        <primes>2</primes>" +
+                "        <primes>3</primes>" +
+                "        <primes>5</primes>" +
+                "        <primes>7</primes>" +
+                "    </primes>" +
+                "</PrimesResult>";
+
+        mvc.perform(MockMvcRequestBuilders.get("/testPrime").accept(MediaType.APPLICATION_XML))
+                .andExpect((status().isOk()))
+                .andExpect(content().xml(expectedResult));
     }
 }
