@@ -131,8 +131,8 @@ or
 ## Comments/Assumptions for the exercise
 
 * Although the sample JSON provided in instructions has names starting with an upper case I decided to follow the camel case convention that is standard for JSON names
-* The MockMvc class does not support custom error handlers so an explicit test was added to call the /error endpoint to check the json returned. Although this does not return a bad request, passing an invalid initial to the primes endpoint correctly sets the request status in addition to returning the error json. This was tested with Postman
-* Performance tests are included and some rudimentary optimisation has been performed by caching results and splitting requests into chunks and running those chunks in multiple threads. Sample results from a sample of tests are as follows:
+* The MockMvc class does not support custom error handlers so an explicit test was added to call the /error endpoint to check the json returned. Although this test does not return a bad request, passing an invalid initial to the primes endpoint correctly sets the request status in addition to returning the error json. This was tested with Postman
+* Performance tests are included and some rudimentary optimisation has been performed by caching results and splitting requests into chunks and running those chunks in multiple threads. Results from a sample of tests are as follows:
     * Primes to 100,000
       * 1 thread and no chuncking took approx 2 seconds
       * 100 threads and chuncking to 1,000 took approx 1.5 seconds
@@ -142,3 +142,5 @@ or
       * 1 thread and no chunking too approx 2 minutes
       * 100 threads and chuncking to 1,000 took approx 1 minute
       * 100 threads and chuncking to 10,000 took approx 30 seconds
+      * A second called with cached results returns in 59 miliseconds
+* Logging was added to the service but this was found have a significant impact on run times so has been removed.  
