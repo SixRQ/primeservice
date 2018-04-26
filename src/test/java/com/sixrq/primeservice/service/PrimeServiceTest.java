@@ -19,7 +19,7 @@ public class PrimeServiceTest {
     }
 
     @Test
-    public void testPrimeNumbersToTen() {
+    public void testPrimeNumbersToTen() throws InterruptedException {
         PrimesResult expectedResult = new PrimesResult(10);
         expectedResult.addPrime(2);
         expectedResult.addPrime(3);
@@ -30,7 +30,7 @@ public class PrimeServiceTest {
     }
 
     @Test
-    public void testPrimeNumbersToTenTwice() {
+    public void testPrimeNumbersToTenTwice() throws InterruptedException {
         PrimesResult expectedResult = new PrimesResult(10);
         expectedResult.addPrime(2);
         expectedResult.addPrime(3);
@@ -42,7 +42,7 @@ public class PrimeServiceTest {
     }
 
     @Test
-    public void testPrimeNumbersToTenAndTwenty() {
+    public void testPrimeNumbersToTenAndTwenty() throws InterruptedException {
         PrimesResult expectedResultToTen = new PrimesResult(10);
         expectedResultToTen.addPrime(2);
         expectedResultToTen.addPrime(3);
@@ -63,7 +63,7 @@ public class PrimeServiceTest {
     }
 
     @Test
-    public void testPrimeNumbersToTwentyAndTen() {
+    public void testPrimeNumbersToTwentyAndTen() throws InterruptedException {
         PrimesResult expectedResultToTen = new PrimesResult(10);
         expectedResultToTen.addPrime(2);
         expectedResultToTen.addPrime(3);
@@ -84,7 +84,7 @@ public class PrimeServiceTest {
     }
 
     @Test
-    public void testPrimeNumbersCorrectWhenInitialIsPrime() {
+    public void testPrimeNumbersCorrectWhenInitialIsPrime() throws InterruptedException {
         PrimesResult expectedResult = new PrimesResult(7);
         expectedResult.addPrime(2);
         expectedResult.addPrime(3);
@@ -96,26 +96,26 @@ public class PrimeServiceTest {
 
     @Test
     public void oneIsNotPrime() {
-        assertThat(service.isPrime(1), is(equalTo(false)));
+        assertThat(PrimeService.isPrime(1), is(equalTo(false)));
     }
 
     @Test
     public void twoIsPrime() {
-        assertThat(service.isPrime(2), is(equalTo(true)));
+        assertThat(PrimeService.isPrime(2), is(equalTo(true)));
     }
 
     @Test
     public void fourIsNotPrime() {
-        assertThat(service.isPrime(4), is(equalTo(false)));
+        assertThat(PrimeService.isPrime(4), is(equalTo(false)));
     }
 
     @Test
     public void oneHundredAndSeventySevenIsNotPrime() {
-        assertThat(service.isPrime(177), is(equalTo(false)));
+        assertThat(PrimeService.isPrime(177), is(equalTo(false)));
     }
 
     @Test
     public void oneHundredAndSeventyNineIsPrime() {
-        assertThat(service.isPrime(179), is(equalTo(true)));
+        assertThat(PrimeService.isPrime(179), is(equalTo(true)));
     }
 }

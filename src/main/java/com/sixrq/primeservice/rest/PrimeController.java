@@ -28,7 +28,7 @@ public class PrimeController implements ErrorController {
 
     @RequestMapping(value= "/primes/{initial}", produces={"application/json","application/xml"})
     @ResponseBody
-    public PrimesResult primes(@PathVariable("initial") int initial) {
+    public PrimesResult primes(@PathVariable("initial") int initial) throws InterruptedException {
         return service.calculatePrimes(initial);
     }
 

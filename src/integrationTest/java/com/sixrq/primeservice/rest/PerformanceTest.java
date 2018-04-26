@@ -1,7 +1,6 @@
 package com.sixrq.primeservice.rest;
 
 import org.apache.commons.lang3.time.StopWatch;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -31,44 +30,43 @@ public class PerformanceTest {
     private MockMvc mvc;
 
     @Test
-    public void profileSimpleRequest() throws Exception {
+    public void profilePrimesToTen() throws Exception {
         StopWatch stopWatch = StopWatch.createStarted();
 
         try {
             performRestServiceCall(10);
         } finally {
             stopWatch.stop();
-            LOGGER.info("Finished simple test in " + stopWatch.getTime() + "ms");
+            LOGGER.info("Finished Primes To Ten in " + stopWatch.getTime() + "ms");
         }
     }
 
     @Test
-    public void profileLargeRequest() throws Exception {
+    public void profilePrimesToOneHundredThousand() throws Exception {
         StopWatch stopWatch = StopWatch.createStarted();
 
         try {
             performRestServiceCall(100000);
         } finally {
             stopWatch.stop();
-            LOGGER.info("Finished large test in " + stopWatch.getTime() + "ms");
+            LOGGER.info("Finished Primes to One Hundred Thousand in " + stopWatch.getTime() + "ms");
         }
     }
 
     @Test
-    @Ignore
-    public void profileExtremeRequest() throws Exception {
+    public void profilePrimesToOneMillion() throws Exception {
         StopWatch stopWatch = StopWatch.createStarted();
 
         try {
             performRestServiceCall(1000000);
         } finally {
             stopWatch.stop();
-            LOGGER.info("Finished extreme test in " + stopWatch.getTime() + "ms");
+            LOGGER.info("Finished Primes To One Million in " + stopWatch.getTime() + "ms");
         }
     }
 
     @Test
-    public void profileTwoLargeRequests() throws Exception {
+    public void profilePrimesToOneHundredThousandWithSecondCallToCache() throws Exception {
         StopWatch stopWatch = StopWatch.createStarted();
 
         try {
@@ -76,12 +74,12 @@ public class PerformanceTest {
             performRestServiceCall(100000);
         } finally {
             stopWatch.stop();
-            LOGGER.info("Finished two large requests in " + stopWatch.getTime() + "ms");
+            LOGGER.info("Finished Cached Primes To One Hundred Thousand in " + stopWatch.getTime() + "ms");
         }
     }
 
     @Test
-    public void profileMultipleThreads() throws InterruptedException {
+    public void profileThirtyConcurrentRequestsToOneHundredThousand() throws InterruptedException {
         ExecutorService executors = Executors.newFixedThreadPool(30);
         CountDownLatch latch = new CountDownLatch(30);
         StopWatch stopWatch = StopWatch.createStarted();
@@ -94,12 +92,12 @@ public class PerformanceTest {
         } finally {
             stopWatch.stop();
             executors.shutdown();
-            LOGGER.info("Finished multiple threads test in " + stopWatch.getTime() + "ms");
+            LOGGER.info("Finished Thirty Concurrent Threads test in " + stopWatch.getTime() + "ms");
         }
     }
 
     @Test
-    public void profileMultipleRequestSmallThreadPool() throws InterruptedException {
+    public void profileThirtyRequestsToOneHundredThousandUsingFiveThreads() throws InterruptedException {
         ExecutorService executors = Executors.newFixedThreadPool(5);
         CountDownLatch latch = new CountDownLatch(30);
         StopWatch stopWatch = StopWatch.createStarted();
@@ -112,7 +110,28 @@ public class PerformanceTest {
         } finally {
             stopWatch.stop();
             executors.shutdown();
-            LOGGER.info("Finished multiple threads with smaller thread pool in " + stopWatch.getTime() + "ms");
+            LOGGER.info("Finished Thirty Requests With a Thread Pool of Five in " + stopWatch.getTime() + "ms");
+        }
+    }
+
+    @Test
+    public void profileTenConsecutiveRequestsToOneThousand() throws Exception {
+        StopWatch stopWatch = StopWatch.createStarted();
+
+        try {
+            performRestServiceCall(1000);
+            performRestServiceCall(1000);
+            performRestServiceCall(1000);
+            performRestServiceCall(1000);
+            performRestServiceCall(1000);
+            performRestServiceCall(1000);
+            performRestServiceCall(1000);
+            performRestServiceCall(1000);
+            performRestServiceCall(1000);
+            performRestServiceCall(1000);
+        } finally {
+            stopWatch.stop();
+            LOGGER.info("Finished Ten Consecutve requests in " + stopWatch.getTime() + "ms");
         }
     }
 
@@ -127,27 +146,6 @@ public class PerformanceTest {
                 fail("Unexpected exceptions running multi-threaded test");
             }
         });
-    }
-
-    @Test
-    public void profileMultipleSimpleRequests() throws Exception {
-        StopWatch stopWatch = StopWatch.createStarted();
-
-        try {
-            performRestServiceCall(1000);
-            performRestServiceCall(1000);
-            performRestServiceCall(1000);
-            performRestServiceCall(1000);
-            performRestServiceCall(1000);
-            performRestServiceCall(1000);
-            performRestServiceCall(1000);
-            performRestServiceCall(1000);
-            performRestServiceCall(1000);
-            performRestServiceCall(1000);
-        } finally {
-            stopWatch.stop();
-            LOGGER.info("Finished multiple simple requests in " + stopWatch.getTime() + "ms");
-        }
     }
 
     private void performRestServiceCall(int initial) throws Exception {

@@ -1,6 +1,7 @@
 package com.sixrq.primeservice.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
@@ -25,6 +26,10 @@ public class PrimesResult {
 
     public void addPrime(int prime) {
         primes.add(prime);
+    }
+
+    public void addAllPrimes(List<Integer> primeNumbers) {
+        primes.addAll(primeNumbers);
     }
 
     @Override
