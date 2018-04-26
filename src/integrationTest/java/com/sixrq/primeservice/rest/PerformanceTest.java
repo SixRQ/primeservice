@@ -1,6 +1,8 @@
 package com.sixrq.primeservice.rest;
 
+import com.sixrq.primeservice.service.PrimeService;
 import org.apache.commons.lang3.time.StopWatch;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -11,7 +13,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -26,8 +30,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PerformanceTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(PerformanceTest.class);
 
-    @Autowired
     private MockMvc mvc;
+
+    @Before
+    public void setUp() {
+        mvc = MockMvcBuilders.standaloneSetup(new PrimeController(new PrimeService())).build();
+    }
 
     @Test
     public void profilePrimesToTen() throws Exception {
@@ -139,7 +147,6 @@ public class PerformanceTest {
         executors.submit(() -> {
             try {
                 performRestServiceCall(100000);
-                LOGGER.info("Completed threaded call");
                 latch.countDown();
             } catch (Exception e) {
                 LOGGER.error("Unexpected exception received", e);
