@@ -14,7 +14,7 @@ alternatively using java
 
 ```./gradlew build && java -jar build/libs/primeservice-0.1.0.jar```
 
-The URL to access the service is in the form ```http://localhost:8080/primes/<integer value>[?imperative=true]``` where *\<integer value\>* is the initial value to calculate up to and the imperative parameter is optional defaulting to false.
+The URL to access the service is in the form ```http://localhost:8080/primes/<integer value>[?algorithm=functional|imperative|recursive]``` where *\<integer value\>* is the initial value to calculate up to and the algorithm parameter is optional defaulting to functional.
 
 Running the service as detailed above this URL [http://localhost:8080/primes/10](http://localhost:8080/primes/10) should provide the following response.
 
@@ -146,4 +146,5 @@ or
     * Primes to 1,000,000 unsing an imperative algorithm
       * 100 threads and chunking to 10,000 took approx 11 seconds
 * The imperative approach to calculating primes is significantly faster for larger initial values than using the functional approach and streams. This is likely because the number of modulus calculations can be reduced by only checking odd numbers
+* The recursive algorithm is extremely slow 
 * Logging was added to the service but this was found have a significant impact on run times so has been removed.  

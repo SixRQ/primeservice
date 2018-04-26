@@ -5,6 +5,9 @@ import org.hamcrest.core.Is;
 import org.junit.Before;
 import org.junit.Test;
 
+import static com.sixrq.primeservice.service.Algorithm.functional;
+import static com.sixrq.primeservice.service.Algorithm.imperative;
+import static com.sixrq.primeservice.service.Algorithm.recursive;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
@@ -26,7 +29,7 @@ public class PrimeServiceTest {
         expectedResult.addPrime(5);
         expectedResult.addPrime(7);
 
-        assertThat(service.calculatePrimes(10, false), is(equalTo(expectedResult)));
+        assertThat(service.calculatePrimes(10, functional), is(equalTo(expectedResult)));
     }
 
     @Test
@@ -37,8 +40,8 @@ public class PrimeServiceTest {
         expectedResult.addPrime(5);
         expectedResult.addPrime(7);
 
-        assertThat(service.calculatePrimes(10, false), is(equalTo(expectedResult)));
-        assertThat(service.calculatePrimes(10, false), is(equalTo(expectedResult)));
+        assertThat(service.calculatePrimes(10, functional), is(equalTo(expectedResult)));
+        assertThat(service.calculatePrimes(10, functional), is(equalTo(expectedResult)));
     }
 
     @Test
@@ -58,8 +61,8 @@ public class PrimeServiceTest {
         expectedResultToTwenty.addPrime(17);
         expectedResultToTwenty.addPrime(19);
 
-        assertThat(service.calculatePrimes(10, false), is(equalTo(expectedResultToTen)));
-        assertThat(service.calculatePrimes(20, false), is(equalTo(expectedResultToTwenty)));
+        assertThat(service.calculatePrimes(10, functional), is(equalTo(expectedResultToTen)));
+        assertThat(service.calculatePrimes(20, functional), is(equalTo(expectedResultToTwenty)));
     }
 
     @Test
@@ -79,8 +82,8 @@ public class PrimeServiceTest {
         expectedResultToTwenty.addPrime(17);
         expectedResultToTwenty.addPrime(19);
 
-        assertThat(service.calculatePrimes(20, false), is(equalTo(expectedResultToTwenty)));
-        assertThat(service.calculatePrimes(10, false), is(equalTo(expectedResultToTen)));
+        assertThat(service.calculatePrimes(20, functional), is(equalTo(expectedResultToTwenty)));
+        assertThat(service.calculatePrimes(10, functional), is(equalTo(expectedResultToTen)));
     }
 
     @Test
@@ -100,8 +103,29 @@ public class PrimeServiceTest {
         expectedResultToTwenty.addPrime(17);
         expectedResultToTwenty.addPrime(19);
 
-        assertThat(service.calculatePrimes(20, true), is(equalTo(expectedResultToTwenty)));
-        assertThat(service.calculatePrimes(10, false), is(equalTo(expectedResultToTen)));
+        assertThat(service.calculatePrimes(20, imperative), is(equalTo(expectedResultToTwenty)));
+        assertThat(service.calculatePrimes(10, functional), is(equalTo(expectedResultToTen)));
+    }
+
+    @Test
+    public void testPrimeNumbersToTwentyRecursiveiveAndTen() throws InterruptedException {
+        PrimesResult expectedResultToTen = new PrimesResult(10);
+        expectedResultToTen.addPrime(2);
+        expectedResultToTen.addPrime(3);
+        expectedResultToTen.addPrime(5);
+        expectedResultToTen.addPrime(7);
+        PrimesResult expectedResultToTwenty = new PrimesResult(20);
+        expectedResultToTwenty.addPrime(2);
+        expectedResultToTwenty.addPrime(3);
+        expectedResultToTwenty.addPrime(5);
+        expectedResultToTwenty.addPrime(7);
+        expectedResultToTwenty.addPrime(11);
+        expectedResultToTwenty.addPrime(13);
+        expectedResultToTwenty.addPrime(17);
+        expectedResultToTwenty.addPrime(19);
+
+        assertThat(service.calculatePrimes(20, recursive), is(equalTo(expectedResultToTwenty)));
+        assertThat(service.calculatePrimes(10, functional), is(equalTo(expectedResultToTen)));
     }
 
     @Test
@@ -112,7 +136,7 @@ public class PrimeServiceTest {
         expectedResult.addPrime(5);
         expectedResult.addPrime(7);
 
-        assertThat(service.calculatePrimes(7, false), is(equalTo(expectedResult)));
+        assertThat(service.calculatePrimes(7, functional), is(equalTo(expectedResult)));
     }
 
     @Test
@@ -128,6 +152,16 @@ public class PrimeServiceTest {
     @Test
     public void fourIsNotPrime() {
         assertThat(PrimeService.isPrime(4), is(equalTo(false)));
+    }
+
+    @Test
+    public void fiveIsPrime() {
+        assertThat(PrimeService.isPrime(5), is(equalTo(true)));
+    }
+
+    @Test
+    public void eightIsNotPrime() {
+        assertThat(PrimeService.isPrime(8), is(equalTo(false)));
     }
 
     @Test
@@ -156,12 +190,57 @@ public class PrimeServiceTest {
     }
 
     @Test
+    public void fiveIsPrimeImperative() {
+        assertThat(PrimeService.isPrimeImperative(5), is(equalTo(true)));
+    }
+
+    @Test
+    public void eightIsNotPrimeImperative() {
+        assertThat(PrimeService.isPrimeImperative(8), is(equalTo(false)));
+    }
+
+    @Test
     public void oneHundredAndSeventySevenIsNotPrimeImperative() {
         assertThat(PrimeService.isPrimeImperative(177), is(equalTo(false)));
     }
 
     @Test
     public void oneHundredAndSeventyNineIsPrimeImperative() {
-        assertThat(PrimeService.isPrimeImperative(179), is(equalTo(true)));
+        assertThat(PrimeService.isPrimeRecursive(179), is(equalTo(true)));
+    }
+
+    @Test
+    public void oneIsNotPrimeRecursive() {
+        assertThat(PrimeService.isPrimeRecursive(1), is(equalTo(false)));
+    }
+
+    @Test
+    public void twoIsPrimeRecursive() {
+        assertThat(PrimeService.isPrimeRecursive(2), is(equalTo(true)));
+    }
+
+    @Test
+    public void fourIsNotPrimeRecursive() {
+        assertThat(PrimeService.isPrimeRecursive(4), is(equalTo(false)));
+    }
+
+    @Test
+    public void fiveIsPrimeRecursive() {
+        assertThat(PrimeService.isPrimeRecursive(5), is(equalTo(true)));
+    }
+
+    @Test
+    public void eightIsNotPrimeRecursive() {
+        assertThat(PrimeService.isPrimeRecursive(8), is(equalTo(false)));
+    }
+
+    @Test
+    public void oneHundredAndSeventySevenIsNotPrimeRecursive() {
+        assertThat(PrimeService.isPrimeRecursive(177), is(equalTo(false)));
+    }
+
+    @Test
+    public void oneHundredAndSeventyNineIsPrimeRecursive() {
+        assertThat(PrimeService.isPrimeRecursive(179), is(equalTo(true)));
     }
 }
