@@ -5,10 +5,7 @@ import com.sixrq.primeservice.model.PrimesResult;
 import com.sixrq.primeservice.service.PrimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -28,8 +25,8 @@ public class PrimeController implements ErrorController {
 
     @RequestMapping(value= "/primes/{initial}", produces={"application/json","application/xml"})
     @ResponseBody
-    public PrimesResult primes(@PathVariable("initial") int initial) throws InterruptedException {
-        return service.calculatePrimes(initial);
+    public PrimesResult primes(@PathVariable("initial") int initial, @RequestParam(value = "imperative", required = false, defaultValue = "false") boolean imperative) throws InterruptedException {
+        return service.calculatePrimes(initial, imperative);
     }
 
     @RequestMapping(PATH)

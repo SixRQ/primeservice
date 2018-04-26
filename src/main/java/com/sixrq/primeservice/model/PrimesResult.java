@@ -28,7 +28,7 @@ public class PrimesResult {
         primes.add(prime);
     }
 
-    public void addAllPrimes(List<Integer> primeNumbers) {
+    public void addAllPrimes(Set<Integer> primeNumbers) {
         primes.addAll(primeNumbers);
     }
 

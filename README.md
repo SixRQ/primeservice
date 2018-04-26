@@ -1,12 +1,12 @@
 # Prime Service
 
-A RESTful service that takes a number as input and calculates all prime numbers up to and including the passed number.
+A RESTful service that takes an initial number as input and calculates all prime numbers up to and including the passed number.
 
 The service supports both JSON and XML return types as specified in the request header.
 
 ### Running the application
 
-The application can be run on a Linux operating system using the gradle task bootRun
+The application can be run on a Linux operating system using the gradle task **bootRun**
 
 ```./gradlew bootRun```
 
@@ -14,9 +14,9 @@ alternatively using java
 
 ```./gradlew build && java -jar build/libs/primeservice-0.1.0.jar```
 
-The URL to access the service is in the form ```http://localhost:8080/primes/<integer value>``` where *<integer value>* is the passed value to calculate up to.
+The URL to access the service is in the form ```http://localhost:8080/primes/<integer value>[?imperative=true]``` where *\<integer value\>* is the initial value to calculate up to and the imperative parameter is optional defaulting to false.
 
-If you are running the service as detailed above this URL [http://localhost:8080/primes/10](http://localhost:8080/primes/10) should provide the following response.
+Running the service as detailed above this URL [http://localhost:8080/primes/10](http://localhost:8080/primes/10) should provide the following response.
 
 ```
 <PrimesResult xmlns="">
@@ -131,7 +131,7 @@ or
 ## Comments/Assumptions for the exercise
 
 * Although the sample JSON provided in instructions has names starting with an upper case I decided to follow the camel case convention that is standard for JSON names
-* The MockMvc class does not support custom error handlers so an explicit test was added to call the /error endpoint to check the json returned. Although this test does not return a bad request, passing an invalid initial to the primes endpoint correctly sets the request status in addition to returning the error json. This was tested with Postman
+* The MockMvc class does not support custom error handlers so an explicit test was added to call the /error endpoint to check the json returned. Although this test does not return a bad request status, passing an invalid initial to the primes endpoint correctly sets the request status in addition to returning the error json. This was tested with Postman
 * Performance tests are included and some rudimentary optimisation has been performed by caching results and splitting requests into chunks and running those chunks in multiple threads. Results from a sample of tests are as follows:
     * Primes to 100,000
       * 1 thread and no chuncking took approx 2 seconds
@@ -143,4 +143,7 @@ or
       * 100 threads and chuncking to 1,000 took approx 1 minute
       * 100 threads and chuncking to 10,000 took approx 30 seconds
       * A second called with cached results returns in 59 miliseconds
+    * Primes to 1,000,000 unsing an imperative algorithm
+      * 100 threads and chunking to 10,000 took approx 11 seconds
+* The imperative approach to calculating primes is significantly faster for larger initial values than using the functional approach and streams. This is likely because the number of modulus calculations can be reduced by only checking odd numbers
 * Logging was added to the service but this was found have a significant impact on run times so has been removed.  
