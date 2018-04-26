@@ -22,7 +22,6 @@ import java.util.concurrent.Executors;
 
 import static com.sixrq.primeservice.service.Algorithm.functional;
 import static com.sixrq.primeservice.service.Algorithm.imperative;
-import static com.sixrq.primeservice.service.Algorithm.recursive;
 import static org.junit.Assert.fail;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -250,113 +249,6 @@ public class PerformanceTest {
             LOGGER.info("Finished Ten Consecutve requests in " + stopWatch.getTime() + "ms");
         }
     }
-
-
-//    @Test
-//    public void profilePrimesToTenRecursive() throws Exception {
-//        StopWatch stopWatch = StopWatch.createStarted();
-//
-//        try {
-//            performRestServiceCall(10, recursive);
-//        } finally {
-//            stopWatch.stop();
-//            LOGGER.info("Finished Primes To Ten in " + stopWatch.getTime() + "ms");
-//        }
-//    }
-//
-//    @Test
-//    public void profilePrimesToOneHundredThousandRecursive() throws Exception {
-//        StopWatch stopWatch = StopWatch.createStarted();
-//
-//        try {
-//            performRestServiceCall(100000, recursive);
-//        } finally {
-//            stopWatch.stop();
-//            LOGGER.info("Finished Primes to One Hundred Thousand in " + stopWatch.getTime() + "ms");
-//        }
-//    }
-//
-//    @Test
-//    public void profilePrimesToOneMillionRecursive() throws Exception {
-//        StopWatch stopWatch = StopWatch.createStarted();
-//
-//        try {
-//            performRestServiceCall(1000000, recursive);
-//        } finally {
-//            stopWatch.stop();
-//            LOGGER.info("Finished Primes To One Million in " + stopWatch.getTime() + "ms");
-//        }
-//    }
-//
-//    @Test
-//    public void profilePrimesToOneHundredThousandRecursiveWithSecondCallToCache() throws Exception {
-//        StopWatch stopWatch = StopWatch.createStarted();
-//
-//        try {
-//            performRestServiceCall(100000, recursive);
-//            performRestServiceCall(100000, recursive);
-//        } finally {
-//            stopWatch.stop();
-//            LOGGER.info("Finished Cached Primes To One Hundred Thousand in " + stopWatch.getTime() + "ms");
-//        }
-//    }
-//
-//    @Test
-//    public void profileThirtyConcurrentRequestsToOneHundredThousandRecursive() throws InterruptedException {
-//        ExecutorService executors = Executors.newFixedThreadPool(30);
-//        CountDownLatch latch = new CountDownLatch(30);
-//        StopWatch stopWatch = StopWatch.createStarted();
-//
-//        try {
-//            for(int threadCount = 0; threadCount < 30; threadCount++) {
-//                executeThreadedCall(executors, latch, recursive);
-//            }
-//            latch.await();
-//        } finally {
-//            stopWatch.stop();
-//            executors.shutdown();
-//            LOGGER.info("Finished Thirty Concurrent Threads test in " + stopWatch.getTime() + "ms");
-//        }
-//    }
-//
-//    @Test
-//    public void profileThirtyRequestsToOneHundredThousandUsingRecursiveFiveThreads() throws InterruptedException {
-//        ExecutorService executors = Executors.newFixedThreadPool(5);
-//        CountDownLatch latch = new CountDownLatch(30);
-//        StopWatch stopWatch = StopWatch.createStarted();
-//
-//        try {
-//            for(int threadCount = 0; threadCount < 30; threadCount++) {
-//                executeThreadedCall(executors, latch, recursive);
-//            }
-//            latch.await();
-//        } finally {
-//            stopWatch.stop();
-//            executors.shutdown();
-//            LOGGER.info("Finished Thirty Requests With a Thread Pool of Five in " + stopWatch.getTime() + "ms");
-//        }
-//    }
-//
-//    @Test
-//    public void profileTenConsecutiveRequestsToOneThousandRecursive() throws Exception {
-//        StopWatch stopWatch = StopWatch.createStarted();
-//
-//        try {
-//            performRestServiceCall(1000, recursive);
-//            performRestServiceCall(1000, recursive);
-//            performRestServiceCall(1000, recursive);
-//            performRestServiceCall(1000, recursive);
-//            performRestServiceCall(1000, recursive);
-//            performRestServiceCall(1000, recursive);
-//            performRestServiceCall(1000, recursive);
-//            performRestServiceCall(1000, recursive);
-//            performRestServiceCall(1000, recursive);
-//            performRestServiceCall(1000, recursive);
-//        } finally {
-//            stopWatch.stop();
-//            LOGGER.info("Finished Ten Consecutve requests in " + stopWatch.getTime() + "ms");
-//        }
-//    }
 
     private void executeThreadedCall(ExecutorService executors, CountDownLatch latch, Algorithm algorithm) {
         executors.submit(() -> {

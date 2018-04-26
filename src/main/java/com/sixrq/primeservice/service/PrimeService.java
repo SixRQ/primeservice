@@ -14,6 +14,8 @@ import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.sixrq.primeservice.service.Algorithm.imperative;
+
 
 public class PrimeService {
     private static final Logger LOGGER = LoggerFactory.getLogger(PrimeService.class);
@@ -51,15 +53,10 @@ public class PrimeService {
                 int chunckStart = start + processingChunk * chunkSize;
                 int chunckLimit = chunckStart + chunkSize > limit ? limit : chunckStart + chunkSize;
 
-                switch (algorithm) {
-                    case imperative:
-                        result.addAll(IntStream.rangeClosed(chunckStart, chunckLimit).filter(PrimeService::isPrimeImperative).boxed().collect(Collectors.toSet()));
-                        break;
-                    case functional:
-                        result.addAll(IntStream.rangeClosed(chunckStart, chunckLimit).filter(PrimeService::isPrime).boxed().collect(Collectors.toSet()));
-                        break;
-                    case recursive:
-                        result.addAll(IntStream.rangeClosed(chunckStart, chunckLimit).filter(PrimeService::isPrimeRecursive).boxed().collect(Collectors.toSet()));
+                if (algorithm == imperative) {
+                    result.addAll(IntStream.rangeClosed(chunckStart, chunckLimit).filter(PrimeService::isPrimeImperative).boxed().collect(Collectors.toSet()));
+                } else {
+                    result.addAll(IntStream.rangeClosed(chunckStart, chunckLimit).filter(PrimeService::isPrime).boxed().collect(Collectors.toSet()));
                 }
                 latch.countDown();
             });
@@ -76,7 +73,8 @@ public class PrimeService {
         return candidate > 1 && (candidate < 4 || (candidate % 2 != 0 && checkPrimeImperativeStyle(candidate)));
     }
 
-    static boolean isPrimeRecursive(int candidate) {
+    // This is left in for demonstration purposes only. It was a slow technique, but used to explore other algorithms
+    private static boolean isPrimeRecursive(int candidate) {
         return candidate > 1 && (candidate < 4 || (candidate % 2 != 0 && checkPrimeRecursiveStyle(candidate, IntStream.rangeClosed(3, (candidate / 2 > 3 ? candidate / 2 : 3)).boxed().collect(Collectors.toList()))));
     }
 
