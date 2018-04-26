@@ -63,6 +63,27 @@ public class PrimeServiceTest {
     }
 
     @Test
+    public void testPrimeNumbersToTenAndTwentySieve() throws InterruptedException {
+        PrimesResult expectedResultToTen = new PrimesResult(10);
+        expectedResultToTen.addPrime(2);
+        expectedResultToTen.addPrime(3);
+        expectedResultToTen.addPrime(5);
+        expectedResultToTen.addPrime(7);
+        PrimesResult expectedResultToTwenty = new PrimesResult(20);
+        expectedResultToTwenty.addPrime(2);
+        expectedResultToTwenty.addPrime(3);
+        expectedResultToTwenty.addPrime(5);
+        expectedResultToTwenty.addPrime(7);
+        expectedResultToTwenty.addPrime(11);
+        expectedResultToTwenty.addPrime(13);
+        expectedResultToTwenty.addPrime(17);
+        expectedResultToTwenty.addPrime(19);
+
+        assertThat(service.calculatePrimes(10, sieve), is(equalTo(expectedResultToTen)));
+        assertThat(service.calculatePrimes(20, sieve), is(equalTo(expectedResultToTwenty)));
+    }
+
+    @Test
     public void testPrimeNumbersToTwentyAndTen() throws InterruptedException {
         PrimesResult expectedResultToTen = new PrimesResult(10);
         expectedResultToTen.addPrime(2);
@@ -105,6 +126,27 @@ public class PrimeServiceTest {
     }
 
     @Test
+    public void testPrimeNumbersToTwentySieveAndTen() throws InterruptedException {
+        PrimesResult expectedResultToTen = new PrimesResult(10);
+        expectedResultToTen.addPrime(2);
+        expectedResultToTen.addPrime(3);
+        expectedResultToTen.addPrime(5);
+        expectedResultToTen.addPrime(7);
+        PrimesResult expectedResultToTwenty = new PrimesResult(20);
+        expectedResultToTwenty.addPrime(2);
+        expectedResultToTwenty.addPrime(3);
+        expectedResultToTwenty.addPrime(5);
+        expectedResultToTwenty.addPrime(7);
+        expectedResultToTwenty.addPrime(11);
+        expectedResultToTwenty.addPrime(13);
+        expectedResultToTwenty.addPrime(17);
+        expectedResultToTwenty.addPrime(19);
+
+        assertThat(service.calculatePrimes(20, sieve), is(equalTo(expectedResultToTwenty)));
+        assertThat(service.calculatePrimes(10, functional), is(equalTo(expectedResultToTen)));
+    }
+
+    @Test
     public void testPrimeNumbersCorrectWhenInitialIsPrime() throws InterruptedException {
         PrimesResult expectedResult = new PrimesResult(7);
         expectedResult.addPrime(2);
@@ -113,11 +155,6 @@ public class PrimeServiceTest {
         expectedResult.addPrime(7);
 
         assertThat(service.calculatePrimes(7, functional), is(equalTo(expectedResult)));
-    }
-
-    @Test
-    public void oneIsNotPrime() {
-        assertThat(PrimeService.isPrime(1), is(equalTo(false)));
     }
 
     @Test
@@ -148,11 +185,6 @@ public class PrimeServiceTest {
     @Test
     public void oneHundredAndSeventyNineIsPrime() {
         assertThat(PrimeService.isPrime(179), is(equalTo(true)));
-    }
-
-    @Test
-    public void oneIsNotPrimeImperative() {
-        assertThat(PrimeService.isPrimeImperative(1), is(equalTo(false)));
     }
 
     @Test

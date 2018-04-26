@@ -1,5 +1,5 @@
 package com.sixrq.primeservice.service;
 
 public enum Algorithm {
-    functional, imperative
+    functional, imperative, sieve
 }

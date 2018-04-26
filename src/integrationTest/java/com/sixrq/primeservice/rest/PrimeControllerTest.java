@@ -57,10 +57,10 @@ public class PrimeControllerTest {
     }
 
     @Test
-    public void testPrimeRecursiveAsJson() throws Exception {
+    public void testPrimeSieveAsJson() throws Exception {
         String expectedResult = "{\"initial\":10,\"primes\":[2,3,5,7]}";
 
-        mvc.perform(MockMvcRequestBuilders.get("/primes/10?algorithm=recursive").accept(MediaType.APPLICATION_JSON))
+        mvc.perform(MockMvcRequestBuilders.get("/primes/10?algorithm=sieve").accept(MediaType.APPLICATION_JSON))
                 .andExpect((status().isOk()))
                 .andExpect(content().json(expectedResult));
     }
@@ -108,7 +108,7 @@ public class PrimeControllerTest {
     }
 
     @Test
-    public void testPrimesToOneThousandRecursiveAsJson() throws Exception {
+    public void testPrimesToOneThousandSieveAsJson() throws Exception {
         String expectedResult = "{\"initial\":1000,\"primes\":[2,3,5," +
                 "7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73," +
                 "79,83,89,97,101,103,107,109,113,127,131,137,139,149," +
@@ -123,7 +123,7 @@ public class PrimeControllerTest {
                 "863,877,881,883,887,907,911,919,929,937,941,947,953,967," +
                 "971,977,983,991,997]}";
 
-        mvc.perform(MockMvcRequestBuilders.get("/primes/1000?algorithm=recursive").accept(MediaType.APPLICATION_JSON))
+        mvc.perform(MockMvcRequestBuilders.get("/primes/1000?algorithm=sieve").accept(MediaType.APPLICATION_JSON))
                 .andExpect((status().isOk()))
                 .andExpect(content().json(expectedResult));
     }
@@ -181,7 +181,7 @@ public class PrimeControllerTest {
     }
 
     @Test
-    public void testPrimeRecursiveAsXML() throws Exception {
+    public void testPrimeSieveAsXML() throws Exception {
         String expectedResult = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
                 "<PrimesResult xmlns=\"\">" +
                 "    <initial>10</initial>" +
@@ -193,7 +193,7 @@ public class PrimeControllerTest {
                 "    </primes>" +
                 "</PrimesResult>";
 
-        mvc.perform(MockMvcRequestBuilders.get("/primes/10?algorithm=recursive").accept(MediaType.APPLICATION_XML))
+        mvc.perform(MockMvcRequestBuilders.get("/primes/10?algorithm=sieve").accept(MediaType.APPLICATION_XML))
                 .andExpect((status().isOk()))
                 .andExpect(content().xml(expectedResult));
     }

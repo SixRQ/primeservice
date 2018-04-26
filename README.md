@@ -14,7 +14,7 @@ alternatively using java
 
 ```./gradlew build && java -jar build/libs/primeservice-0.1.0.jar```
 
-The URL to access the service is in the form ```http://localhost:8080/primes/<integer value>[?algorithm=functional|imperative|recursive]``` where *\<integer value\>* is the initial value to calculate up to and the algorithm parameter is optional defaulting to functional.
+The URL to access the service is in the form ```http://localhost:8080/primes/<integer value>[?algorithm=functional|imperative|sieve]``` where *\<integer value\>* is the initial value to calculate up to and the algorithm parameter is optional defaulting to functional.
 
 Running the service as detailed above this URL [http://localhost:8080/primes/10](http://localhost:8080/primes/10) should provide the following response.
 
@@ -147,4 +147,5 @@ or
       * 100 threads and chunking to 10,000 took approx 11 seconds
 * The imperative approach to calculating primes is significantly faster for larger initial values than using the functional approach and streams. This is likely because the number of modulus calculations can be reduced by only checking odd numbers
 * The recursive algorithm is extremely slow 
+* The Sieve of Eratosthenes is a fast algorithm for single threaded processing, calculating 1,000,000 primes in approx 48 seconds with a single thread 
 * Logging was added to the service but this was found have a significant impact on run times so has been removed.  

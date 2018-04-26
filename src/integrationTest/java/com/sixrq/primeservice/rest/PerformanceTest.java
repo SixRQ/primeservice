@@ -20,8 +20,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.sixrq.primeservice.service.Algorithm.functional;
-import static com.sixrq.primeservice.service.Algorithm.imperative;
+import static com.sixrq.primeservice.service.Algorithm.*;
 import static org.junit.Assert.fail;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -244,6 +243,113 @@ public class PerformanceTest {
             performRestServiceCall(1000, imperative);
             performRestServiceCall(1000, imperative);
             performRestServiceCall(1000, imperative);
+        } finally {
+            stopWatch.stop();
+            LOGGER.info("Finished Ten Consecutve requests in " + stopWatch.getTime() + "ms");
+        }
+    }
+
+
+    @Test
+    public void profilePrimesToTenSieve() throws Exception {
+        StopWatch stopWatch = StopWatch.createStarted();
+
+        try {
+            performRestServiceCall(10, sieve);
+        } finally {
+            stopWatch.stop();
+            LOGGER.info("Finished Primes To Ten in " + stopWatch.getTime() + "ms");
+        }
+    }
+
+    @Test
+    public void profilePrimesToOneHundredThousandSieve() throws Exception {
+        StopWatch stopWatch = StopWatch.createStarted();
+
+        try {
+            performRestServiceCall(100000, sieve);
+        } finally {
+            stopWatch.stop();
+            LOGGER.info("Finished Primes to One Hundred Thousand in " + stopWatch.getTime() + "ms");
+        }
+    }
+
+    @Test
+    public void profilePrimesToOneMillionSieve() throws Exception {
+        StopWatch stopWatch = StopWatch.createStarted();
+
+        try {
+            performRestServiceCall(1000000, sieve);
+        } finally {
+            stopWatch.stop();
+            LOGGER.info("Finished Primes To One Million in " + stopWatch.getTime() + "ms");
+        }
+    }
+
+    @Test
+    public void profilePrimesToOneHundredThousandSieveWithSecondCallToCache() throws Exception {
+        StopWatch stopWatch = StopWatch.createStarted();
+
+        try {
+            performRestServiceCall(100000, sieve);
+            performRestServiceCall(100000, sieve);
+        } finally {
+            stopWatch.stop();
+            LOGGER.info("Finished Cached Primes To One Hundred Thousand in " + stopWatch.getTime() + "ms");
+        }
+    }
+
+    @Test
+    public void profileThirtyConcurrentRequestsToOneHundredThousandSieve() throws InterruptedException {
+        ExecutorService executors = Executors.newFixedThreadPool(30);
+        CountDownLatch latch = new CountDownLatch(30);
+        StopWatch stopWatch = StopWatch.createStarted();
+
+        try {
+            for(int threadCount = 0; threadCount < 30; threadCount++) {
+                executeThreadedCall(executors, latch, sieve);
+            }
+            latch.await();
+        } finally {
+            stopWatch.stop();
+            executors.shutdown();
+            LOGGER.info("Finished Thirty Concurrent Threads test in " + stopWatch.getTime() + "ms");
+        }
+    }
+
+    @Test
+    public void profileThirtyRequestsToOneHundredThousandUsingSieveFiveThreads() throws InterruptedException {
+        ExecutorService executors = Executors.newFixedThreadPool(5);
+        CountDownLatch latch = new CountDownLatch(30);
+        StopWatch stopWatch = StopWatch.createStarted();
+
+        try {
+            for(int threadCount = 0; threadCount < 30; threadCount++) {
+                executeThreadedCall(executors, latch, sieve);
+            }
+            latch.await();
+        } finally {
+            stopWatch.stop();
+            executors.shutdown();
+            LOGGER.info("Finished Thirty Requests With a Thread Pool of Five in " + stopWatch.getTime() + "ms");
+        }
+    }
+
+    @Test
+    public void profileTenConsecutiveRequestsToOneThousandSieve() throws Exception {
+        StopWatch stopWatch = StopWatch.createStarted();
+
+        try {
+            performRestServiceCall(1000, sieve);
+            performRestServiceCall(1000, sieve);
+            performRestServiceCall(1000, sieve);
+            performRestServiceCall(1000, sieve);
+            performRestServiceCall(1000, sieve);
+            performRestServiceCall(1000, sieve);
+            performRestServiceCall(1000, sieve);
+            performRestServiceCall(1000, sieve);
+            performRestServiceCall(1000, sieve);
+            performRestServiceCall(1000, sieve);
         } finally {
             stopWatch.stop();
             LOGGER.info("Finished Ten Consecutve requests in " + stopWatch.getTime() + "ms");
